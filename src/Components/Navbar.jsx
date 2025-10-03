@@ -1,9 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { ChevronDown, ChevronRight, Search, X, Menu } from 'lucide-react';
+import { ChevronDown, Search, X, Menu } from 'lucide-react';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,7 +9,6 @@ const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
-  const [hoveredBlogItem, setHoveredBlogItem] = useState(0);
   const [mobileDropdowns, setMobileDropdowns] = useState({
     software: false,
     blog: false,
@@ -36,62 +33,6 @@ const Navbar = () => {
     ]
   };
 
-  // Blog & Research dropdown data with hover content
-  const blogResearch = {
-    leftMenu: [
-      {
-        name: 'Human Resources',
-        href: '/blog/human-resources',
-        content: [
-          { title: 'Best HR Software for SMBs', href: '/blog/human-resources/Best-hr-software-smbs' },
-          { title: 'Best HRIS Software', href: '/blog/human-resources/Best-hr-software-smbs' },
-          { title: 'Should You Upgrade Your HR Software...', href: '/blog/human-resources/Best-hr-software-smbs' },
-          { title: 'What Does an HR Consultant Do?', href: '/blog/human-resources/Best-hr-software-smbs' }
-        ]
-      },
-      {
-        name: 'Project Management',
-        href: '/blog/project-management',
-        content: [
-          { title: 'monday.com vs. Asana', href: '/blog/project-management/Project-Management-Methodologies' },
-          { title: 'Project Plan Examples + Template', href: '/blog/project-management/Project-Management-Methodologies' },
-          { title: 'Top 5 Project Management Methodologies', href: '/blog/project-management/Project-Management-Methodologies' },
-          { title: 'Is the Google Project Management Certificate Worth It?', href: '/blog/project-management/Project-Management-Methodologies' }
-        ]
-      },
-      {
-        name: 'IT Management',
-        href: '/blog/IT-management',
-        content: [
-          { title: 'Best VoIP for Small Business', href: '/blog/IT-management/Best-email-marketing-tools' },
-          { title: 'Best HVAC Apps', href: '/blog/IT-management/Best-email-marketing-tools' },
-          { title: 'Best Field Service Management Software', href: '/blog/IT-management/Best-email-marketing-tools' },
-          { title: 'Best ITSM Tools', href: '/blog/IT-management/Best-email-marketing-tools' }
-        ]
-      },
-      {
-        name: 'Business Intelligence',
-        href: '/blog/Business-intelligence',
-        content: [
-          { title: 'Tableau Alternatives', href: 'blog/Business-intelligence/Top-Business-Intelligence-Software' },
-          { title: 'Microsoft Power BI Alternatives', href: 'blog/Business-intelligence/Top-Business-Intelligence-Software' },
-          { title: 'Best Business Intelligence Dashboards', href: 'blog/Business-intelligence/Top-Business-Intelligence-Software' },
-          { title: 'Best Data Storage Solutions', href: 'blog/Business-intelligence/Top-Business-Intelligence-Software' }
-        ]
-      },
-      {
-        name: 'Sales & CRM',
-        href: '/blog/Sales-Crm',
-        content: [
-          { title: 'Best Construction CRM', href: '/blog/Sales-Crm/Credit-card' },
-          { title: 'Best Open Source CRM', href: '/blog/Sales-Crm/Credit-card' },
-          { title: 'Best CRM Certifications and Courses', href: '/blog/Sales-Crm/Credit-card' },
-          { title: 'Best AI CRM', href: '/blog/Sales-Crm/Credit-card' }
-        ]
-      }
-    ]
-  };
-
   // About Us dropdown data
   const aboutUs = [
     { name: 'About Us', href: '/About-Us/about-us' },
@@ -99,12 +40,19 @@ const Navbar = () => {
     { name: 'Careers', href: '/About-Us/Careers' },
   ];
 
+  // Blog & Resources dropdown data
+  const blogResources = {
+    items: [
+      { name: 'Blog', href: '/blog' },
+      { name: 'Resources', href: '/resources' }
+    ]
+  };
+
   // Search functionality
   const allSearchableItems = [
     ...softwareReviews.categories,
-    ...blogResearch.leftMenu,
-    ...blogResearch.leftMenu.flatMap(item => item.content),
-    ...aboutUs
+    ...aboutUs,
+    ...blogResources.items
   ];
 
   useEffect(() => {
@@ -126,20 +74,12 @@ const Navbar = () => {
       clearTimeout(dropdownTimeoutRef.current);
     }
     setActiveDropdown(dropdown);
-    if (dropdown === 'blog') {
-      setHoveredBlogItem(0);
-    }
   };
 
   const handleDropdownLeave = () => {
     dropdownTimeoutRef.current = setTimeout(() => {
       setActiveDropdown(null);
-      setHoveredBlogItem(0);
     }, 150);
-  };
-
-  const handleBlogItemHover = (index) => {
-    setHoveredBlogItem(index);
   };
 
   const toggleMobileMenu = () => {
@@ -158,10 +98,8 @@ const Navbar = () => {
 
   const handleSearchIconClick = () => {
     if (searchQuery.trim()) {
-      // Navigate to search results page with query
       window.location.href = `/search?q=${encodeURIComponent(searchQuery.trim())}`;
     } else if (searchResults.length > 0) {
-      // Navigate to first result if no query but results exist
       window.location.href = searchResults[0].href;
     }
   };
@@ -173,27 +111,21 @@ const Navbar = () => {
   };
 
   const handleSearchResultClick = (result) => {
-    // Prevent multiple clicks during typing animation
     if (isTyping) {
       return;
     }
 
     const targetText = result.name || result.title;
     
-    // Clear any existing typing animation
     if (typingIntervalRef.current) {
       clearInterval(typingIntervalRef.current);
     }
     
-    // Immediately hide search results and clear them
     setShowSearchResults(false);
     setSearchResults([]);
     setIsTyping(true);
-    
-    // Clear current query first
     setSearchQuery('');
     
-    // Animate typing effect
     let currentIndex = 0;
     typingIntervalRef.current = setInterval(() => {
       if (currentIndex <= targetText.length) {
@@ -204,7 +136,7 @@ const Navbar = () => {
         typingIntervalRef.current = null;
         setIsTyping(false);
       }
-    }, 30); // Smooth typing speed
+    }, 30);
   };
 
   const handleSearchFocus = () => {
@@ -214,12 +146,10 @@ const Navbar = () => {
   };
 
   const handleSearchBlur = (e) => {
-    // Check if the blur is happening because user clicked on search results
     if (searchResultsRef.current && searchResultsRef.current.contains(e.relatedTarget)) {
-      return; // Don't hide if clicking on search results
+      return;
     }
     
-    // Increased delay to ensure click events can fire
     setTimeout(() => {
       if (!isTyping) {
         setShowSearchResults(false);
@@ -231,14 +161,12 @@ const Navbar = () => {
     const value = e.target.value;
     setSearchQuery(value);
     
-    // If user manually clears the search, hide results
     if (value === '') {
       setShowSearchResults(false);
       setSearchResults([]);
     }
   };
 
-  // Handle clicks outside search area
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
@@ -252,7 +180,6 @@ const Navbar = () => {
     };
   }, []);
 
-  // Cleanup typing interval on unmount
   useEffect(() => {
     return () => {
       if (typingIntervalRef.current) {
@@ -264,203 +191,175 @@ const Navbar = () => {
   return (
     <>
       <nav className="bg-[#1E2E2B] text-white sticky top-0 z-50 shadow-lg shadow-white/10">
-       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-  <div className="flex items-center justify-between h-22">
-    {/* Logo - Fixed */}
-    <div className="flex-shrink-0">
-      <Link href="/" className="flex items-center space-x-3">
-        <div className="bg-yellow-400 p-2 rounded-md">
-          <div className="w-6 h-6 bg-yellow-600 transform rotate-45 rounded-sm"></div>
-        </div>
-        <div className="flex flex-col">
-          <span className="text-xl font-bold text-white tracking-wide">MARTECHBIZ</span>
-          <span className="text-xs text-gray-300 tracking-wider">Marketing</span>
-        </div>
-      </Link>
-    </div>
-
-    {/* Desktop Navigation */}
-    <div className="hidden lg:flex items-center space-x-8">
-      {/* Software Reviews Dropdown */}
-      <div 
-        className="relative"
-        onMouseEnter={() => handleDropdownEnter('software')}
-        onMouseLeave={handleDropdownLeave}
-      >
-        <Link href="/" className="flex items-center space-x-1 text-white hover:text-[#FFFF00] transition-colors duration-200">
-          <span>Software Evaluation</span>
-          <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'software' ? 'rotate-180' : ''}`} />
-        </Link>
-        
-        {activeDropdown === 'software' && (
-          <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-lg shadow-xl py-4 px-6 text-gray-800 border border-gray-200 opacity-100 translate-y-0 transition-all duration-200 ease-out z-50">
-            <div className="space-y-3">
-              {softwareReviews.categories.map((category, index) => (
-                <Link
-                  key={index}
-                  href={category.href}
-                  className="block text-gray-600 hover:text-[#386861] hover:bg-gray-50 px-2 py-1 rounded transition-all duration-200"
-                >
-                  {category.name}
-                </Link>
-              ))}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-22">
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <a href="/" className="flex items-center">
+                <img
+                  src="/images/logo3.png"
+                  alt="Martechbiz"
+                  className="h-35 w-auto max-w-[200px] sm:max-w-[250px] lg:max-w-[300px] mt-6"
+                />
+              </a>
             </div>
-          </div>
-        )}
-      </div>
 
-      {/* Blog & Research Dropdown */}
-      <div 
-        className="relative"
-        onMouseEnter={() => handleDropdownEnter('blog')}
-        onMouseLeave={handleDropdownLeave}
-      >
-        <Link href="/" className="flex items-center space-x-1 text-white hover:text-[#FFFF00] transition-colors duration-200">
-          <span>Blog & Research</span>
-          <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'blog' ? 'rotate-180' : ''}`} />
-        </Link>
-        
-        {activeDropdown === 'blog' && (
-          <div className="absolute top-full left-0 mt-2 w-96 bg-white rounded-lg shadow-xl py-4 text-gray-800 flex border border-gray-200 opacity-100 translate-y-0 transition-all duration-200 ease-out z-50">
-            <div className="w-1/2 px-4 border-r border-gray-200">
-              {blogResearch.leftMenu.map((item, index) => (
-                <div key={index} className="relative group">
-                  <Link
-                    href={item.href}
-                    className={`flex items-center justify-between py-2 px-2 rounded transition-all duration-200 ${
-                      hoveredBlogItem === index ? 'bg-gray-50 text-[#386861]' : 'text-gray-600 hover:text-[#386861] hover:bg-gray-50'
-                    }`}
-                    onMouseEnter={() => handleBlogItemHover(index)}
-                  >
-                    <span>{item.name}</span>
-                    <ChevronRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              ))}
-            </div>
-            <div className="w-1/2 px-4">
-              <div className="block">
-                <h3 className="font-semibold text-gray-800 mb-3">
-                  {blogResearch.leftMenu[hoveredBlogItem]?.name}
-                </h3>
-                <div className="space-y-2">
-                  {blogResearch.leftMenu[hoveredBlogItem]?.content.map((contentItem, contentIndex) => (
-                    <Link
-                      key={contentIndex}
-                      href={contentItem.href}
-                      className="block text-sm text-gray-600 hover:text-[#386861] hover:bg-gray-50 px-2 py-1 rounded transition-all duration-200"
-                    >
-                      {contentItem.title}
-                    </Link>
-                  ))}
-                </div>
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center space-x-8">
+              {/* Software Reviews Dropdown */}
+              <div 
+                className="relative"
+                onMouseEnter={() => handleDropdownEnter('software')}
+                onMouseLeave={handleDropdownLeave}
+              >
+                <a href="/" className="flex items-center space-x-1 text-white hover:text-[#FFFF00] transition-colors duration-200">
+                  <span>Software Evaluation</span>
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'software' ? 'rotate-180' : ''}`} />
+                </a>
+                
+                {activeDropdown === 'software' && (
+                  <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-lg shadow-xl py-4 px-6 text-gray-800 border border-gray-200 opacity-100 translate-y-0 transition-all duration-200 ease-out z-50">
+                    <div className="space-y-3">
+                      {softwareReviews.categories.map((category, index) => (
+                        <a
+                          key={index}
+                          href={category.href}
+                          className="block text-gray-600 hover:text-[#386861] hover:bg-gray-50 px-2 py-1 rounded transition-all duration-200"
+                        >
+                          {category.name}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Blog & Resources - Simple Link (No Dropdown) */}
+              <div 
+                className="relative"
+                onMouseEnter={() => handleDropdownEnter('blog')}
+                onMouseLeave={handleDropdownLeave}
+              >
+                <a href="/blog" className="flex items-center space-x-1 text-white hover:text-[#FFFF00] transition-colors duration-200">
+                  <span>Blog & Resources</span>
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'blog' ? 'rotate-180' : ''}`} />
+                </a>
+                
+                {activeDropdown === 'blog' && (
+                  <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl py-4 px-6 text-gray-800 border border-gray-200 opacity-100 translate-y-0 transition-all duration-200 ease-out z-50">
+                    <div className="space-y-3">
+                      {blogResources.items.map((item, index) => (
+                        <a
+                          key={index}
+                          href={item.href}
+                          className="block text-gray-600 hover:text-[#386861] hover:bg-gray-50 px-2 py-1 rounded transition-all duration-200"
+                        >
+                          {item.name}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* About Us Dropdown */}
+              <div 
+                className="relative"
+                onMouseEnter={() => handleDropdownEnter('about')}
+                onMouseLeave={handleDropdownLeave}
+              >
+                <a href="/About-Us/about-us" className="flex items-center space-x-1 text-white hover:text-[#FFFF00] transition-colors duration-200">
+                  <span>About Us</span>
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'about' ? 'rotate-180' : ''}`} />
+                </a>
+                
+                {activeDropdown === 'about' && (
+                  <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl py-4 px-6 text-gray-800 border border-gray-200 opacity-100 translate-y-0 transition-all duration-200 ease-out z-50">
+                    <div className="space-y-3">
+                      {aboutUs.map((item, index) => (
+                        <a
+                          key={index}
+                          href={item.href}
+                          className="block text-gray-600 hover:text-[#386861] hover:bg-gray-50 px-2 py-1 rounded transition-all duration-200"
+                        >
+                          {item.name}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-          </div>
-        )}
-      </div>
 
-      {/* About Us Dropdown */}
-      <div 
-        className="relative"
-        onMouseEnter={() => handleDropdownEnter('about')}
-        onMouseLeave={handleDropdownLeave}
-      >
-        <Link href="/" className="flex items-center space-x-1 text-white hover:text-[#FFFF00] transition-colors duration-200">
-          <span>About Us</span>
-          <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'about' ? 'rotate-180' : ''}`} />
-        </Link>
-        
-        {activeDropdown === 'about' && (
-          <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl py-4 px-6 text-gray-800 border border-gray-200 opacity-100 translate-y-0 transition-all duration-200 ease-out z-50">
-            <div className="space-y-3">
-              {aboutUs.map((item, index) => (
-                <Link
-                  key={index}
-                  href={item.href}
-                  className="block text-gray-600 hover:text-[#386861] hover:bg-gray-50 px-2 py-1 rounded transition-all duration-200"
+            {/* Desktop Search Bar */}
+            <div className="hidden lg:block relative" ref={searchRef}>
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search"
+                  className="w-64 pl-4 pr-12 py-2 rounded-full bg-white text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#ffd800] focus:ring-opacity-50 transition-all duration-200"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  onKeyPress={handleSearchKeyPress}
+                  onFocus={handleSearchFocus}
+                  onBlur={handleSearchBlur}
+                />
+                <button
+                  onClick={handleSearchIconClick}
+                  className="absolute right-2 top-1.5 bg-gradient-to-br from-[#ffd800] to-[#ffed4e] rounded-full p-1.5 cursor-pointer transition-all duration-200 hover:scale-110 hover:shadow-lg hover:shadow-yellow-400/50"
+                  aria-label="Search"
                 >
-                  {item.name}
-                </Link>
-              ))}
+                  <Search className="w-4 h-4 text-[#1E2E2B]" />
+                </button>
+              </div>
+              
+              {showSearchResults && searchResults.length > 0 && (
+                <div 
+                  ref={searchResultsRef}
+                  className={`absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl max-h-96 overflow-y-auto z-50 border border-gray-200 transition-all duration-300 ease-out ${
+                    showSearchResults ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+                  }`}
+                >
+                  {searchResults.map((result, index) => (
+                    <div
+                      key={index}
+                      onClick={() => handleSearchResultClick(result)}
+                      className={`block w-full text-left px-4 py-3 text-gray-800 hover:bg-gray-50 hover:text-[#ffd800] border-b border-gray-200 last:border-b-0 transition-all duration-200 cursor-pointer ${
+                        isTyping ? 'opacity-50 cursor-not-allowed' : ''
+                      }`}
+                      onMouseDown={(e) => e.preventDefault()}
+                    >
+                      <div className="font-medium">{result.name || result.title}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Mobile menu button */}
+            <div className="lg:hidden">
+              <button
+                onClick={toggleMobileMenu}
+                className="text-white hover:text-[#ffd800] focus:outline-none focus:text-[#ffd800] transition-colors duration-200"
+              >
+                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
             </div>
           </div>
-        )}
-      </div>
-    </div>
-
-    {/* Desktop Search Bar */}
-    <div className="hidden lg:block relative" ref={searchRef}>
-      <div className="relative">
-        <input
-          type="text"
-          placeholder="Search"
-          className="w-64 pl-4 pr-12 py-2 rounded-full bg-white text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#ffd800] focus:ring-opacity-50 transition-all duration-200"
-          value={searchQuery}
-          onChange={handleSearchChange}
-          onKeyPress={handleSearchKeyPress}
-          onFocus={handleSearchFocus}
-          onBlur={handleSearchBlur}
-        />
-        <button
-          onClick={handleSearchIconClick}
-          className="absolute right-2 top-1.5 bg-gradient-to-br from-[#ffd800] to-[#ffed4e] rounded-full p-1.5 cursor-pointer transition-all duration-200 hover:scale-110 hover:shadow-lg hover:shadow-yellow-400/50"
-          aria-label="Search"
-        >
-          <Search className="w-4 h-4 text-[#1E2E2B]" />
-        </button>
-      </div>
-      
-      {showSearchResults && searchResults.length > 0 && (
-        <div 
-          ref={searchResultsRef}
-          className={`absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl max-h-96 overflow-y-auto z-50 border border-gray-200 transition-all duration-300 ease-out ${
-            showSearchResults ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
-          }`}
-        >
-          {searchResults.map((result, index) => (
-            <div
-              key={index}
-              onClick={() => handleSearchResultClick(result)}
-              className={`block w-full text-left px-4 py-3 text-gray-800 hover:bg-gray-50 hover:text-[#ffd800] border-b border-gray-200 last:border-b-0 transition-all duration-200 cursor-pointer ${
-                isTyping ? 'opacity-50 cursor-not-allowed' : ''
-              }`}
-              onMouseDown={(e) => e.preventDefault()}
-            >
-              <div className="font-medium">{result.name || result.title}</div>
-            </div>
-          ))}
         </div>
-      )}
-    </div>
-
-    {/* Mobile menu button */}
-    <div className="lg:hidden">
-      <button
-        onClick={toggleMobileMenu}
-        className="text-white hover:text-[#ffd800] focus:outline-none focus:text-[#ffd800] transition-colors duration-200"
-      >
-        {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-      </button>
-    </div>
-  </div>
-</div>
-
       </nav>
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
         <div className="lg:hidden fixed inset-0 z-40 bg-white overflow-y-auto">
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
-            <Link href="/" className="flex items-center space-x-2" onClick={() => setIsMenuOpen(false)}>
-              <div className="bg-yellow-400 p-1.5 rounded-md">
-                <div className="w-4 h-4 bg-yellow-600 transform rotate-45 rounded-sm"></div>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-lg font-bold text-[#1E2E2B] tracking-wide">MARTECHBIZ</span>
-                <span className="text-xs text-gray-600 tracking-wider">MADE EASY</span>
-              </div>
-            </Link>
+            <a href="/" className="flex items-center" onClick={() => setIsMenuOpen(false)}>
+              <img
+                src="/images/logo1.png"
+                alt="Martechbiz"
+                className="h-8 w-auto"
+              />
+            </a>
             <button
               onClick={toggleMobileMenu}
               className="text-[#1E2E2B] hover:text-[#ffd800] transition-colors duration-200"
@@ -506,7 +405,7 @@ const Navbar = () => {
                       className={`block w-full text-left px-4 py-3 text-gray-800 hover:bg-gray-50 hover:text-[#ffd800] border-b border-gray-200 last:border-b-0 transition-all duration-200 cursor-pointer ${
                         isTyping ? 'opacity-50 cursor-not-allowed' : ''
                       }`}
-                      onMouseDown={(e) => e.preventDefault()} // Prevent blur on mousedown
+                      onMouseDown={(e) => e.preventDefault()}
                     >
                       <div className="font-medium">{result.name || result.title}</div>
                     </div>
@@ -523,9 +422,7 @@ const Navbar = () => {
                   onClick={() => toggleMobileDropdown('software')}
                   className="flex items-center justify-between w-full py-2 text-[#1E2E2B] border-b border-gray-200"
                 >
-                  <Link href="/" className="text-lg font-medium" onClick={() => setIsMenuOpen(false)}>
-                    Software Evaluation
-                  </Link>
+                  <span className="text-lg font-medium">Software Evaluation</span>
                   <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${mobileDropdowns.software ? 'rotate-180' : ''}`} />
                 </button>
                 <div className={`transition-all duration-300 ease-in-out overflow-hidden ${
@@ -533,43 +430,41 @@ const Navbar = () => {
                 }`}>
                   <div className="mt-2 pl-4 space-y-2">
                     {softwareReviews.categories.map((category, index) => (
-                      <Link
+                      <a
                         key={index}
                         href={category.href}
                         className="block py-2 text-gray-600 hover:text-[#ffd800] transition-colors duration-200"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         {category.name}
-                      </Link>
+                      </a>
                     ))}
                   </div>
                 </div>
               </div>
 
-              {/* Blog & Research */}
+              {/* Blog & Resources - Simple Link (No Dropdown) */}
               <div>
                 <button
                   onClick={() => toggleMobileDropdown('blog')}
                   className="flex items-center justify-between w-full py-2 text-[#1E2E2B] border-b border-gray-200"
                 >
-                  <Link href="/blog" className="text-lg font-medium" onClick={() => setIsMenuOpen(false)}>
-                    Blog & Research
-                  </Link>
+                  <span className="text-lg font-medium">Blog & Resources</span>
                   <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${mobileDropdowns.blog ? 'rotate-180' : ''}`} />
                 </button>
                 <div className={`transition-all duration-300 ease-in-out overflow-hidden ${
                   mobileDropdowns.blog ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                 }`}>
                   <div className="mt-2 pl-4 space-y-2">
-                    {blogResearch.leftMenu.map((item, index) => (
-                      <Link
+                    {blogResources.items.map((item, index) => (
+                      <a
                         key={index}
                         href={item.href}
                         className="block py-2 text-gray-600 hover:text-[#ffd800] transition-colors duration-200"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         {item.name}
-                      </Link>
+                      </a>
                     ))}
                   </div>
                 </div>
@@ -581,9 +476,7 @@ const Navbar = () => {
                   onClick={() => toggleMobileDropdown('about')}
                   className="flex items-center justify-between w-full py-2 text-[#1E2E2B] border-b border-gray-200"
                 >
-                  <Link href="/about" className="text-lg font-medium" onClick={() => setIsMenuOpen(false)}>
-                    About Us
-                  </Link>
+                  <span className="text-lg font-medium">About Us</span>
                   <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${mobileDropdowns.about ? 'rotate-180' : ''}`} />
                 </button>
                 <div className={`transition-all duration-300 ease-in-out overflow-hidden ${
@@ -591,14 +484,14 @@ const Navbar = () => {
                 }`}>
                   <div className="mt-2 pl-4 space-y-2">
                     {aboutUs.map((item, index) => (
-                      <Link
+                      <a
                         key={index}
                         href={item.href}
                         className="block py-2 text-gray-600 hover:text-[#ffd800] transition-colors duration-200"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         {item.name}
-                      </Link>
+                      </a>
                     ))}
                   </div>
                 </div>

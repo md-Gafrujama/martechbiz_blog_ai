@@ -20,7 +20,7 @@ export default function Footer() {
           <div className="flex flex-col space-y-8">
             <div>
               {/* Logo and Company Name */}
-              <div className="flex items-center gap-4 mb-6">
+              <div className="flex items-center gap-4 mt-[-20]">
                 <Image 
                   src="/images/logo2.png" 
                   alt="Martechbiz Logo" 
@@ -32,7 +32,7 @@ export default function Footer() {
                   Martechbiz
                 </h3>
               </div>
-              <div className="w-20 h-1 bg-gradient-to-r from-[#00d9a6] via-[#00f5b8] to-transparent rounded-full"></div>
+              <div className="w-20 h-1 bg-gradient-to-r from-[#00d9a6] via-[#00f5b8] to-transparent rounded-full mt-[-2]"></div>
             </div>
             
             <div className="flex-grow">
@@ -86,7 +86,7 @@ export default function Footer() {
           {/* Column 2 - Company */}
           <div className="flex flex-col">
             <div>
-              <h3 className="font-bold mb-6 text-4xl bg-gradient-to-r from-white via-gray-100 to-[#00d9a6] bg-clip-text text-transparent">
+              <h3 className="font-bold mb-3 text-4xl bg-gradient-to-r from-white via-gray-100 to-[#00d9a6] bg-clip-text text-transparent">
                 Company
               </h3>
               <div className="w-20 h-1 bg-gradient-to-r from-[#00d9a6] via-[#00f5b8] to-transparent rounded-full"></div>
@@ -142,7 +142,7 @@ export default function Footer() {
           {/* Column 3 - Legal */}
           <div className="flex flex-col">
             <div>
-              <h3 className="font-bold mb-6 text-4xl bg-gradient-to-r from-white via-gray-100 to-[#00d9a6] bg-clip-text text-transparent">
+              <h3 className="font-bold mb-3 text-4xl bg-gradient-to-r from-white via-gray-100 to-[#00d9a6] bg-clip-text text-transparent">
                 Legal
               </h3>
               <div className="w-20 h-1 bg-gradient-to-r from-[#00d9a6] via-[#00f5b8] to-transparent rounded-full"></div>
@@ -217,13 +217,13 @@ export default function Footer() {
           {/* Column 4 - Connect With Us */}
           <div className="flex flex-col">
             <div>
-              <h3 className="font-bold mb-6 text-4xl bg-gradient-to-r from-white via-gray-100 to-[#00d9a6] bg-clip-text text-transparent">
+              <h3 className="font-bold mb-3 text-4xl bg-gradient-to-r from-white via-gray-100 to-[#00d9a6] bg-clip-text text-transparent">
                 Connect
               </h3>
               <div className="w-20 h-1 bg-gradient-to-r from-[#00d9a6] via-[#00f5b8] to-transparent rounded-full"></div>
             </div>
             
-            <p className="text-gray-300 mb-8 text-lg leading-relaxed">
+            <p className="text-gray-300 text-lg leading-relaxed mt-7">
               Stay connected for the latest MarTech insights, industry trends, and expert analysis on marketing technology solutions.
             </p>
             
@@ -235,7 +235,7 @@ export default function Footer() {
               
               <a 
                 href="#" 
-                className="relative w-16 h-16 flex items-center justify-center rounded-2xl bg-gradient-to-br from-[#0077b5] to-[#005582] hover:from-[#00d9a6] hover:to-[#00f5b8] hover:shadow-2xl hover:shadow-[#00d9a6]/50 transform hover:scale-110 hover:-rotate-6 transition-all duration-500 group"
+                className="relative w-16 h-16 flex items-center justify-center rounded-2xl bg-gradient-to-br from-[#0077b5] to-[#005582] hover:from-[#00d9a6] hover:to-[#00f5b8] hover:shadow-2xl hover:shadow-[#00d9a6]/50 transform hover:scale-110 hover:-rotate-6 transition-all duration-500 group mt-4"
               >
                 <FaLinkedinIn size={24} className="group-hover:text-black text-white transition-colors duration-500 relative z-10" />
                 <div className="absolute inset-0 rounded-2xl bg-[#00d9a6] opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
