@@ -353,7 +353,7 @@ const Navbar = () => {
       {isMenuOpen && (
         <div className="lg:hidden fixed inset-0 z-40 bg-white overflow-y-auto">
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
-            <a href="/" className="flex items-center" onClick={() => setIsMenuOpen(false)}>
+            <a href="https://the-tech-gafru.vercel.app/" className="flex items-center" onClick={() => setIsMenuOpen(false)}>
               <img
                 src="/images/logo1.png"
                 alt="Martechbiz"
