@@ -8,7 +8,7 @@ const outfit = Outfit({
 })
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://quore-it-ai-blogs.vercel.app'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://martechbiz-blog-ai.vercel.app'),
   title: {
     default: 'Blog App - Your Source for Quality Content',
     template: '%s | Blog App'
@@ -23,13 +23,13 @@ export const metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: process.env.NEXT_PUBLIC_BASE_URL || 'https://quore-it-ai-blogs.vercel.app',
+    url: process.env.NEXT_PUBLIC_BASE_URL || 'https://martechbiz-blog-ai.vercel.app',
     siteName: 'Blog App',
     title: 'Blog App - Your Source for Quality Content',
     description: 'Discover insightful articles, tutorials, and stories on our blog. Stay updated with the latest trends and knowledge.',
     images: [
       {
-        url: '/images/og-image.png',
+        url: '/images/og-logo2.png',
         width: 1200,
         height: 630,
         alt: 'Blog App - Your Source for Quality Content',
@@ -48,7 +48,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Blog App - Your Source for Quality Content',
     description: 'Discover insightful articles, tutorials, and stories on our blog. Stay updated with the latest trends and knowledge.',
-    images: ['/images/og-image.png'],
+    images: ['/images/og-logo2.png'],
     creator: '@blogapp',
     site: '@blogapp',
   },
@@ -75,7 +75,7 @@ export const metadata = {
   
   // Alternate languages (if you have multiple language versions)
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_BASE_URL || 'https://quore-it-ai-blogs.vercel.app',
+    canonical: process.env.NEXT_PUBLIC_BASE_URL || 'https://martechbiz-blog-ai.vercel.app',
   },
   
   // Category
@@ -83,7 +83,7 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://quore-it-ai-blogs.vercel.app';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://martechbiz-blog-ai.vercel.app';
   const ogImageUrl = `${baseUrl}/images/og-logo2.png`;
 
   return (
