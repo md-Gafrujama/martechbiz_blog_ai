@@ -195,7 +195,7 @@ const Navbar = () => {
           <div className="flex items-center justify-between h-22">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <a href="/" className="flex items-center">
+              <a href="https://the-tech-gafru.vercel.app/" className="flex items-center">
                 <img
                   src="/images/logo3.png"
                   alt="Martechbiz"
@@ -212,7 +212,7 @@ const Navbar = () => {
                 onMouseEnter={() => handleDropdownEnter('software')}
                 onMouseLeave={handleDropdownLeave}
               >
-                <a href="/" className="flex items-center space-x-1 text-white hover:text-[#FFFF00] transition-colors duration-200">
+                <a href="https://the-tech-gafru.vercel.app/" className="flex items-center space-x-1 text-white hover:text-[#FFFF00] transition-colors duration-200">
                   <span>Software Evaluation</span>
                   <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'software' ? 'rotate-180' : ''}`} />
                 </a>
@@ -240,7 +240,7 @@ const Navbar = () => {
                 onMouseEnter={() => handleDropdownEnter('blog')}
                 onMouseLeave={handleDropdownLeave}
               >
-                <a href="/blog" className="flex items-center space-x-1 text-white hover:text-[#FFFF00] transition-colors duration-200">
+                <a href="https://martechbiz-blog-ai.vercel.app/" className="flex items-center space-x-1 text-white hover:text-[#FFFF00] transition-colors duration-200">
                   <span>Blog & Resources</span>
                   <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'blog' ? 'rotate-180' : ''}`} />
                 </a>
@@ -268,7 +268,7 @@ const Navbar = () => {
                 onMouseEnter={() => handleDropdownEnter('about')}
                 onMouseLeave={handleDropdownLeave}
               >
-                <a href="/About-Us/about-us" className="flex items-center space-x-1 text-white hover:text-[#FFFF00] transition-colors duration-200">
+                <a href="https://the-tech-gafru.vercel.app/About-Us/about-us" className="flex items-center space-x-1 text-white hover:text-[#FFFF00] transition-colors duration-200">
                   <span>About Us</span>
                   <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'about' ? 'rotate-180' : ''}`} />
                 </a>
