@@ -43,7 +43,7 @@ const Navbar = () => {
   // Blog & Resources dropdown data
   const blogResources = {
     items: [
-      { name: 'Blog', href: 'https://martechbiz-blog-ai.vercel.app/' },
+      { name: 'Blog', href: 'https://martechbiz-blog-ai.vercel.app' },
       { name: 'Resources', href: '/resources' }
     ]
   };
@@ -240,7 +240,7 @@ const Navbar = () => {
                 onMouseEnter={() => handleDropdownEnter('blog')}
                 onMouseLeave={handleDropdownLeave}
               >
-                <a href="https://martechbiz-blog-ai.vercel.app/" className="flex items-center space-x-1 text-white hover:text-[#FFFF00] transition-colors duration-200">
+                <a href="https://martechbiz-blog-ai.vercel.app" className="flex items-center space-x-1 text-white hover:text-[#FFFF00] transition-colors duration-200">
                   <span>Blog & Resources</span>
                   <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'blog' ? 'rotate-180' : ''}`} />
                 </a>
