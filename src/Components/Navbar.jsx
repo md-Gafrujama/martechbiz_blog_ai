@@ -24,26 +24,26 @@ const Navbar = () => {
   // Software Reviews dropdown data
   const softwareReviews = {
     categories: [
-      { name: 'Human Resources Software', href: '/Software-evaluation/HR-software' },
-      { name: 'Payroll Software', href: '/Software-evaluation/Payroll-software' },
-      { name: 'CRM Software', href: '/Software-evaluation/CRM-software' },
-      { name: 'Sales Software', href: '/Software-evaluation/Sales-software' },
-      { name: 'Project Management Software', href: '/Software-evaluation/Project-management' },
+      { name: 'Human Resources Software', href: 'https://the-tech-gafru.vercel.app/Software-evaluation/HR-software' },
+      { name: 'Payroll Software', href: 'https://the-tech-gafru.vercel.app/Software-evaluation/Payroll-software' },
+      { name: 'CRM Software', href: 'https://the-tech-gafru.vercel.app/Software-evaluation/CRM-software' },
+      { name: 'Sales Software', href: 'https://the-tech-gafru.vercel.app/Software-evaluation/Sales-software' },
+      { name: 'Project Management Software', href: 'https://the-tech-gafru.vercel.app/Software-evaluation/Project-management' },
       { name: 'Business Intelligence Software', href: '/Software-evaluation/Business-Intelligence-Software' }
     ]
   };
 
   // About Us dropdown data
   const aboutUs = [
-    { name: 'About Us', href: '/About-Us/about-us' },
-    { name: 'Contact Us', href: '/About-Us/Contact-us' },
-    { name: 'Careers', href: '/About-Us/Careers' },
+    { name: 'About Us', href: 'https://the-tech-gafru.vercel.app/About-Us/about-us' },
+    { name: 'Contact Us', href: 'https://the-tech-gafru.vercel.app/About-Us/Contact-us' },
+    { name: 'Careers', href: 'https://the-tech-gafru.vercel.app/About-Us/Careers' },
   ];
 
   // Blog & Resources dropdown data
   const blogResources = {
     items: [
-      { name: 'Blog', href: '/blog' },
+      { name: 'Blog', href: 'https://martechbiz-blog-ai.vercel.app/' },
       { name: 'Resources', href: '/resources' }
     ]
   };
