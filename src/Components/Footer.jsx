@@ -96,7 +96,7 @@ export default function Footer() {
               <ul className="space-y-6">
                 <li>
                   <Link 
-                    href="/About-Us/about-us" 
+                    href="https://the-tech-gafru.vercel.app/About-Us/about-us" 
                     className="group flex items-center gap-3 text-gray-300 hover:text-[#00d9a6] transition-all duration-500 text-lg"
                   >
                     <FaArrowRight className="text-[#00d9a6] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-500" size={16} />
@@ -108,7 +108,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link 
-                    href="/About-Us/Careers" 
+                    href="https://the-tech-gafru.vercel.app/About-Us/Careers" 
                     className="group flex items-center gap-3 text-gray-300 hover:text-[#00d9a6] transition-all duration-500 text-lg"
                   >
                     <FaArrowRight className="text-[#00d9a6] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-500" size={16} />
@@ -125,7 +125,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link 
-                    href="/About-Us/Contact-us" 
+                    href="https://the-tech-gafru.vercel.app/About-Us/Contact-us" 
                     className="group flex items-center gap-3 text-gray-300 hover:text-[#00d9a6] transition-all duration-500 text-lg"
                   >
                     <FaArrowRight className="text-[#00d9a6] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-500" size={16} />
@@ -152,7 +152,7 @@ export default function Footer() {
               <ul className="space-y-6">
                 <li>
                   <Link 
-                    href="/Terms-of-use" 
+                    href="https://the-tech-gafru.vercel.app/Terms-of-use" 
                     className="group flex items-center gap-3 text-gray-300 hover:text-[#00d9a6] transition-all duration-500 text-lg"
                   >
                     <FaArrowRight className="text-[#00d9a6] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-500" size={16} />
@@ -164,7 +164,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link 
-                    href="/Privacy-policy" 
+                    href="https://the-tech-gafru.vercel.app/Privacy-policy" 
                     className="group flex items-center gap-3 text-gray-300 hover:text-[#00d9a6] transition-all duration-500 text-lg"
                   >
                     <FaArrowRight className="text-[#00d9a6] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-500" size={16} />
@@ -176,7 +176,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link 
-                    href="/Cookies-Policy" 
+                    href="https://the-tech-gafru.vercel.app/Cookies-Policy" 
                     className="group flex items-center gap-3 text-gray-300 hover:text-[#00d9a6] transition-all duration-500 text-lg"
                   >
                     <FaArrowRight className="text-[#00d9a6] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-500" size={16} />
@@ -188,7 +188,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link 
-                    href="/Data-security" 
+                    href="https://the-tech-gafru.vercel.app/Data-security" 
                     className="group flex items-center gap-3 text-gray-300 hover:text-[#00d9a6] transition-all duration-500 text-lg"
                   >
                     <FaArrowRight className="text-[#00d9a6] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-500" size={16} />
@@ -200,7 +200,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link 
-                    href="/California-Do-not-shell-my-info" 
+                    href="https://the-tech-gafru.vercel.app/California-Do-not-shell-my-info" 
                     className="group flex items-center gap-3 text-gray-300 hover:text-[#00d9a6] transition-all duration-500 text-lg"
                   >
                     <FaArrowRight className="text-[#00d9a6] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-500" size={16} />
