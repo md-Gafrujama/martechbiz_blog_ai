@@ -83,9 +83,24 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://quore-it-ai-blogs.vercel.app';
+  const ogImageUrl = `${baseUrl}/images/og-logo2.png`;
+
   return (
     <html lang="en">
       <head>
+        {/* OG Image Meta Tag */}
+        <meta name="image" property="og:image" content={ogImageUrl} />
+        <meta property="og:image:secure_url" content={ogImageUrl} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Blog App - Your Source for Quality Content" />
+        <meta property="og:image:type" content="image/png" />
+        
+        {/* Twitter Image */}
+        <meta name="twitter:image" content={ogImageUrl} />
+        <meta name="twitter:image:alt" content="Blog App - Your Source for Quality Content" />
+        
         {/* Favicon - Simple approach with timestamp for cache busting */}
         <link rel="icon" href={`/images/logo2.png?t=${Date.now()}`} type="image/png" />
         <link rel="shortcut icon" href={`/images/logo2.png?t=${Date.now()}`} type="image/png" />
