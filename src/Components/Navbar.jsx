@@ -28,19 +28,19 @@ const Navbar = () => {
   // Software Reviews dropdown data
   const softwareReviews = {
     categories: [
-      { name: 'Human Resources Software', href: '/Software-comparison/HR-software' },
-      { name: 'Payroll Software', href: '/Software-comparison/Payroll-software' },
-      { name: 'CRM Software', href: '/Software-comparison/CRM-software' },
-      { name: 'Accounting Management Software', href: '/Software-comparison/Accounting-management-software' },
-      { name: 'VoIP & Business Phone systems', href: '/Software-comparison/VoIP-&-Business-Phone-systems' }
+      { name: 'Human Resources Software', href: 'https://the-tech-gafru.vercel.app/Software-comparison/HR-software' },
+      { name: 'Payroll Software', href: 'https://the-tech-gafru.vercel.app/Software-comparison/Payroll-software' },
+      { name: 'CRM Software', href: 'https://the-tech-gafru.vercel.app/Software-comparison/CRM-software' },
+      { name: 'Accounting Management Software', href: 'https://the-tech-gafru.vercel.app/Software-comparison/Accounting-management-software' },
+      { name: 'VoIP & Business Phone systems', href: 'https://the-tech-gafru.vercel.app/Software-comparison/VoIP-&-Business-Phone-systems' }
     ]
   };
 
   // About Us dropdown data
   const aboutUs = [
-    { name: 'About Us', href: '/About-Us/about-us' },
-    { name: 'Contact Us', href: '/About-Us/Contact-us' },
-    { name: 'Careers', href: '/About-Us/Careers' },
+    { name: 'About Us', href: 'https://the-tech-gafru.vercel.app/About-Us/about-us' },
+    { name: 'Contact Us', href: 'https://the-tech-gafru.vercel.app/About-Us/Contact-us' },
+    { name: 'Careers', href: 'https://the-tech-gafru.vercel.app/About-Us/Careers' },
   ];
 
   // Blog & Resources dropdown data
@@ -53,8 +53,8 @@ const Navbar = () => {
 
   // All searchable items with navigation links
   const allSearchableItems = [
-    { name: 'Home', href: '/' },
-    { name: 'Software Comparison', href: '/' },
+    { name: 'Home', href: 'https://the-tech-gafru.vercel.app/' },
+    { name: 'Software Comparison', href: 'https://the-tech-gafru.vercel.app/' },
     ...softwareReviews.categories,
     ...aboutUs,
     ...blogResources.items
@@ -243,7 +243,7 @@ const Navbar = () => {
           <div className="flex items-center justify-between h-22">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <a href="/" className="flex items-center">
+              <a href="https://the-tech-gafru.vercel.app/" className="flex items-center">
                 <img
                   src="/images/logo3.png"
                   alt="Martechbiz"
