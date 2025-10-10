@@ -47,7 +47,7 @@ const Navbar = () => {
   const blogResources = {
     items: [
       { name: 'Blog', href: 'https://martechbiz-blog-ai.vercel.app' },
-      { name: 'Resources', href: '/resources' }
+      { name: 'Resources', href: 'https://the-tech-gafru.vercel.app/resources' }
     ]
   };
 
@@ -62,10 +62,12 @@ const Navbar = () => {
 
   // Function to check if current path is active
   const isActiveLink = (href) => {
-    if (href === '/') {
+    if (href === 'https://the-tech-gafru.vercel.app/' || href === '/') {
       return pathname === '/';
     }
-    return pathname.startsWith(href);
+    // Extract the path from full URL for comparison
+    const urlPath = href.replace('https://the-tech-gafru.vercel.app', '');
+    return pathname.startsWith(urlPath);
   };
 
   // Function to get active dropdown based on current path
@@ -129,7 +131,9 @@ const Navbar = () => {
       if (exactMatch) {
         navigateToPage(exactMatch.href);
       } else {
-        router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+        // For search functionality, navigate to search page or handle no results
+        const searchUrl = `https://the-tech-gafru.vercel.app/search?q=${encodeURIComponent(searchQuery.trim())}`;
+        window.open(searchUrl, '_blank');
       }
     } else if (searchResults.length > 0) {
       navigateToPage(searchResults[0].href);
@@ -142,10 +146,13 @@ const Navbar = () => {
     }
   };
 
+  // Fixed navigation function
   const navigateToPage = (href) => {
     if (href.startsWith('http')) {
-      window.open(href, '_blank');
+      // For external URLs, open in new tab
+      window.open(href, '_blank', 'noopener,noreferrer');
     } else {
+      // For internal routes, use Next.js router
       router.push(href);
     }
     setShowSearchResults(false);
@@ -261,7 +268,7 @@ const Navbar = () => {
                 onMouseLeave={handleDropdownLeave}
               >
                 <a 
-                  href="/" 
+                  href="https://the-tech-gafru.vercel.app/" 
                   className={`flex items-center space-x-1 transition-colors duration-200 ${
                     isActiveLink('/Software-comparison/') || getActiveDropdown() === 'software' 
                       ? 'text-[#FFFF00]' 
@@ -279,6 +286,8 @@ const Navbar = () => {
                         <a
                           key={index}
                           href={category.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className={`block px-2 py-1 rounded transition-all duration-200 ${
                             isActiveLink(category.href)
                               ? 'text-[#386861] bg-gray-100'
@@ -301,6 +310,8 @@ const Navbar = () => {
               >
                 <a 
                   href="https://martechbiz-blog-ai.vercel.app" 
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={`flex items-center space-x-1 transition-colors duration-200 ${
                     getActiveDropdown() === 'blog' 
                       ? 'text-[#FFFF00]' 
@@ -318,6 +329,8 @@ const Navbar = () => {
                         <a
                           key={index}
                           href={item.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className={`block px-2 py-1 rounded transition-all duration-200 ${
                             isActiveLink(item.href)
                               ? 'text-[#386861] bg-gray-100'
@@ -339,7 +352,9 @@ const Navbar = () => {
                 onMouseLeave={handleDropdownLeave}
               >
                 <a 
-                  href="/About-Us/about-us" 
+                  href="https://the-tech-gafru.vercel.app/About-Us/about-us" 
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={`flex items-center space-x-1 transition-colors duration-200 ${
                     isActiveLink('/About-Us/') || getActiveDropdown() === 'about' 
                       ? 'text-[#FFFF00]' 
@@ -357,6 +372,8 @@ const Navbar = () => {
                         <a
                           key={index}
                           href={item.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className={`block px-2 py-1 rounded transition-all duration-200 ${
                             isActiveLink(item.href)
                               ? 'text-[#386861] bg-gray-100'
@@ -435,7 +452,7 @@ const Navbar = () => {
       {isMenuOpen && (
         <div className="lg:hidden fixed inset-0 z-40 bg-white overflow-y-auto">
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
-            <a href="/" className="flex items-center" onClick={() => setIsMenuOpen(false)}>
+            <a href="https://the-tech-gafru.vercel.app/" className="flex items-center" onClick={() => setIsMenuOpen(false)}>
               <img
                 src="/images/logo1.png"
                 alt="Martechbiz"
@@ -520,6 +537,8 @@ const Navbar = () => {
                       <a
                         key={index}
                         href={category.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className={`block py-2 transition-colors duration-200 ${
                           isActiveLink(category.href)
                             ? 'text-[#ffd800] font-medium'
@@ -555,6 +574,8 @@ const Navbar = () => {
                       <a
                         key={index}
                         href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className={`block py-2 transition-colors duration-200 ${
                           isActiveLink(item.href)
                             ? 'text-[#ffd800] font-medium'
@@ -590,6 +611,8 @@ const Navbar = () => {
                       <a
                         key={index}
                         href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className={`block py-2 transition-colors duration-200 ${
                           isActiveLink(item.href)
                             ? 'text-[#ffd800] font-medium'
