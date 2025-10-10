@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { ChevronDown, Search, X, Menu } from 'lucide-react';
+import { useRouter, usePathname } from 'next/navigation';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,6 +17,9 @@ const Navbar = () => {
   });
   const [isTyping, setIsTyping] = useState(false);
 
+  const router = useRouter();
+  const pathname = usePathname();
+
   const dropdownTimeoutRef = useRef(null);
   const searchRef = useRef(null);
   const typingIntervalRef = useRef(null);
@@ -24,20 +28,19 @@ const Navbar = () => {
   // Software Reviews dropdown data
   const softwareReviews = {
     categories: [
-      { name: 'Human Resources Software', href: 'https://the-tech-gafru.vercel.app/Software-evaluation/HR-software' },
-      { name: 'Payroll Software', href: 'https://the-tech-gafru.vercel.app/Software-evaluation/Payroll-software' },
-      { name: 'CRM Software', href: 'https://the-tech-gafru.vercel.app/Software-evaluation/CRM-software' },
-      { name: 'Sales Software', href: 'https://the-tech-gafru.vercel.app/Software-evaluation/Sales-software' },
-      { name: 'Project Management Software', href: 'https://the-tech-gafru.vercel.app/Software-evaluation/Project-management' },
-      { name: 'Business Intelligence Software', href: '/Software-evaluation/Business-Intelligence-Software' }
+      { name: 'Human Resources Software', href: '/Software-comparison/HR-software' },
+      { name: 'Payroll Software', href: '/Software-comparison/Payroll-software' },
+      { name: 'CRM Software', href: '/Software-comparison/CRM-software' },
+      { name: 'Accounting Management Software', href: '/Software-comparison/Accounting-management-software' },
+      { name: 'VoIP & Business Phone systems', href: '/Software-comparison/VoIP-&-Business-Phone-systems' }
     ]
   };
 
   // About Us dropdown data
   const aboutUs = [
-    { name: 'About Us', href: 'https://the-tech-gafru.vercel.app/About-Us/about-us' },
-    { name: 'Contact Us', href: 'https://the-tech-gafru.vercel.app/About-Us/Contact-us' },
-    { name: 'Careers', href: 'https://the-tech-gafru.vercel.app/About-Us/Careers' },
+    { name: 'About Us', href: '/About-Us/about-us' },
+    { name: 'Contact Us', href: '/About-Us/Contact-us' },
+    { name: 'Careers', href: '/About-Us/Careers' },
   ];
 
   // Blog & Resources dropdown data
@@ -48,12 +51,34 @@ const Navbar = () => {
     ]
   };
 
-  // Search functionality
+  // All searchable items with navigation links
   const allSearchableItems = [
+    { name: 'Home', href: '/' },
+    { name: 'Software Comparison', href: '/' },
     ...softwareReviews.categories,
     ...aboutUs,
     ...blogResources.items
   ];
+
+  // Function to check if current path is active
+  const isActiveLink = (href) => {
+    if (href === '/') {
+      return pathname === '/';
+    }
+    return pathname.startsWith(href);
+  };
+
+  // Function to get active dropdown based on current path
+  const getActiveDropdown = () => {
+    if (pathname.startsWith('/Software-comparison/')) {
+      return 'software';
+    } else if (pathname.startsWith('/About-Us/')) {
+      return 'about';
+    } else if (pathname.includes('blog') || pathname.startsWith('/resources')) {
+      return 'blog';
+    }
+    return null;
+  };
 
   useEffect(() => {
     if (searchQuery.length > 0 && !isTyping) {
@@ -98,9 +123,16 @@ const Navbar = () => {
 
   const handleSearchIconClick = () => {
     if (searchQuery.trim()) {
-      window.location.href = `/search?q=${encodeURIComponent(searchQuery.trim())}`;
+      const exactMatch = allSearchableItems.find(item => 
+        item.name?.toLowerCase() === searchQuery.toLowerCase()
+      );
+      if (exactMatch) {
+        navigateToPage(exactMatch.href);
+      } else {
+        router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      }
     } else if (searchResults.length > 0) {
-      window.location.href = searchResults[0].href;
+      navigateToPage(searchResults[0].href);
     }
   };
 
@@ -108,6 +140,17 @@ const Navbar = () => {
     if (e.key === 'Enter') {
       handleSearchIconClick();
     }
+  };
+
+  const navigateToPage = (href) => {
+    if (href.startsWith('http')) {
+      window.open(href, '_blank');
+    } else {
+      router.push(href);
+    }
+    setShowSearchResults(false);
+    setSearchQuery('');
+    setIsMenuOpen(false);
   };
 
   const handleSearchResultClick = (result) => {
@@ -135,6 +178,11 @@ const Navbar = () => {
         clearInterval(typingIntervalRef.current);
         typingIntervalRef.current = null;
         setIsTyping(false);
+        
+        // Navigate to the selected page after typing animation
+        setTimeout(() => {
+          navigateToPage(result.href);
+        }, 500);
       }
     }, 30);
   };
@@ -195,7 +243,7 @@ const Navbar = () => {
           <div className="flex items-center justify-between h-22">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <a href="https://the-tech-gafru.vercel.app/" className="flex items-center">
+              <a href="/" className="flex items-center">
                 <img
                   src="/images/logo3.png"
                   alt="Martechbiz"
@@ -212,8 +260,15 @@ const Navbar = () => {
                 onMouseEnter={() => handleDropdownEnter('software')}
                 onMouseLeave={handleDropdownLeave}
               >
-                <a href="https://the-tech-gafru.vercel.app/" className="flex items-center space-x-1 text-white hover:text-[#FFFF00] transition-colors duration-200">
-                  <span>Software Evaluation</span>
+                <a 
+                  href="/" 
+                  className={`flex items-center space-x-1 transition-colors duration-200 ${
+                    isActiveLink('/Software-comparison/') || getActiveDropdown() === 'software' 
+                      ? 'text-[#FFFF00]' 
+                      : 'text-white hover:text-[#FFFF00]'
+                  }`}
+                >
+                  <span>Software Comparison</span>
                   <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'software' ? 'rotate-180' : ''}`} />
                 </a>
                 
@@ -224,7 +279,11 @@ const Navbar = () => {
                         <a
                           key={index}
                           href={category.href}
-                          className="block text-gray-600 hover:text-[#386861] hover:bg-gray-50 px-2 py-1 rounded transition-all duration-200"
+                          className={`block px-2 py-1 rounded transition-all duration-200 ${
+                            isActiveLink(category.href)
+                              ? 'text-[#386861] bg-gray-100'
+                              : 'text-gray-600 hover:text-[#386861] hover:bg-gray-50'
+                          }`}
                         >
                           {category.name}
                         </a>
@@ -234,13 +293,20 @@ const Navbar = () => {
                 )}
               </div>
 
-              {/* Blog & Resources - Simple Link (No Dropdown) */}
+              {/* Blog & Resources Dropdown */}
               <div 
                 className="relative"
                 onMouseEnter={() => handleDropdownEnter('blog')}
                 onMouseLeave={handleDropdownLeave}
               >
-                <a href="https://martechbiz-blog-ai.vercel.app" className="flex items-center space-x-1 text-white hover:text-[#FFFF00] transition-colors duration-200">
+                <a 
+                  href="https://martechbiz-blog-ai.vercel.app" 
+                  className={`flex items-center space-x-1 transition-colors duration-200 ${
+                    getActiveDropdown() === 'blog' 
+                      ? 'text-[#FFFF00]' 
+                      : 'text-white hover:text-[#FFFF00]'
+                  }`}
+                >
                   <span>Blog & Resources</span>
                   <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'blog' ? 'rotate-180' : ''}`} />
                 </a>
@@ -252,7 +318,11 @@ const Navbar = () => {
                         <a
                           key={index}
                           href={item.href}
-                          className="block text-gray-600 hover:text-[#386861] hover:bg-gray-50 px-2 py-1 rounded transition-all duration-200"
+                          className={`block px-2 py-1 rounded transition-all duration-200 ${
+                            isActiveLink(item.href)
+                              ? 'text-[#386861] bg-gray-100'
+                              : 'text-gray-600 hover:text-[#386861] hover:bg-gray-50'
+                          }`}
                         >
                           {item.name}
                         </a>
@@ -268,7 +338,14 @@ const Navbar = () => {
                 onMouseEnter={() => handleDropdownEnter('about')}
                 onMouseLeave={handleDropdownLeave}
               >
-                <a href="https://the-tech-gafru.vercel.app/About-Us/about-us" className="flex items-center space-x-1 text-white hover:text-[#FFFF00] transition-colors duration-200">
+                <a 
+                  href="/About-Us/about-us" 
+                  className={`flex items-center space-x-1 transition-colors duration-200 ${
+                    isActiveLink('/About-Us/') || getActiveDropdown() === 'about' 
+                      ? 'text-[#FFFF00]' 
+                      : 'text-white hover:text-[#FFFF00]'
+                  }`}
+                >
                   <span>About Us</span>
                   <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'about' ? 'rotate-180' : ''}`} />
                 </a>
@@ -280,7 +357,11 @@ const Navbar = () => {
                         <a
                           key={index}
                           href={item.href}
-                          className="block text-gray-600 hover:text-[#386861] hover:bg-gray-50 px-2 py-1 rounded transition-all duration-200"
+                          className={`block px-2 py-1 rounded transition-all duration-200 ${
+                            isActiveLink(item.href)
+                              ? 'text-[#386861] bg-gray-100'
+                              : 'text-gray-600 hover:text-[#386861] hover:bg-gray-50'
+                          }`}
                         >
                           {item.name}
                         </a>
@@ -296,7 +377,7 @@ const Navbar = () => {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Search"
+                  placeholder="Search pages..."
                   className="w-64 pl-4 pr-12 py-2 rounded-full bg-white text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#ffd800] focus:ring-opacity-50 transition-all duration-200"
                   value={searchQuery}
                   onChange={handleSearchChange}
@@ -326,10 +407,11 @@ const Navbar = () => {
                       onClick={() => handleSearchResultClick(result)}
                       className={`block w-full text-left px-4 py-3 text-gray-800 hover:bg-gray-50 hover:text-[#ffd800] border-b border-gray-200 last:border-b-0 transition-all duration-200 cursor-pointer ${
                         isTyping ? 'opacity-50 cursor-not-allowed' : ''
-                      }`}
+                      } ${isActiveLink(result.href) ? 'bg-yellow-50 text-[#ffd800]' : ''}`}
                       onMouseDown={(e) => e.preventDefault()}
                     >
                       <div className="font-medium">{result.name || result.title}</div>
+                      <div className="text-xs text-gray-500 mt-1">{result.href}</div>
                     </div>
                   ))}
                 </div>
@@ -353,7 +435,7 @@ const Navbar = () => {
       {isMenuOpen && (
         <div className="lg:hidden fixed inset-0 z-40 bg-white overflow-y-auto">
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
-            <a href="https://the-tech-gafru.vercel.app/" className="flex items-center" onClick={() => setIsMenuOpen(false)}>
+            <a href="/" className="flex items-center" onClick={() => setIsMenuOpen(false)}>
               <img
                 src="/images/logo1.png"
                 alt="Martechbiz"
@@ -374,7 +456,7 @@ const Navbar = () => {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Search"
+                  placeholder="Search pages..."
                   className="w-full pl-4 pr-12 py-2 rounded-full bg-gray-100 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#ffd800] focus:ring-opacity-50 transition-all duration-200"
                   value={searchQuery}
                   onChange={handleSearchChange}
@@ -404,10 +486,11 @@ const Navbar = () => {
                       onClick={() => handleSearchResultClick(result)}
                       className={`block w-full text-left px-4 py-3 text-gray-800 hover:bg-gray-50 hover:text-[#ffd800] border-b border-gray-200 last:border-b-0 transition-all duration-200 cursor-pointer ${
                         isTyping ? 'opacity-50 cursor-not-allowed' : ''
-                      }`}
+                      } ${isActiveLink(result.href) ? 'bg-yellow-50 text-[#ffd800]' : ''}`}
                       onMouseDown={(e) => e.preventDefault()}
                     >
                       <div className="font-medium">{result.name || result.title}</div>
+                      <div className="text-xs text-gray-500 mt-1">{result.href}</div>
                     </div>
                   ))}
                 </div>
@@ -420,9 +503,13 @@ const Navbar = () => {
               <div>
                 <button
                   onClick={() => toggleMobileDropdown('software')}
-                  className="flex items-center justify-between w-full py-2 text-[#1E2E2B] border-b border-gray-200"
+                  className={`flex items-center justify-between w-full py-2 border-b border-gray-200 transition-colors duration-200 ${
+                    isActiveLink('/Software-comparison/') || getActiveDropdown() === 'software' 
+                      ? 'text-[#ffd800]' 
+                      : 'text-[#1E2E2B]'
+                  }`}
                 >
-                  <span className="text-lg font-medium">Software Evaluation</span>
+                  <span className="text-lg font-medium">Software Comparison</span>
                   <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${mobileDropdowns.software ? 'rotate-180' : ''}`} />
                 </button>
                 <div className={`transition-all duration-300 ease-in-out overflow-hidden ${
@@ -433,7 +520,11 @@ const Navbar = () => {
                       <a
                         key={index}
                         href={category.href}
-                        className="block py-2 text-gray-600 hover:text-[#ffd800] transition-colors duration-200"
+                        className={`block py-2 transition-colors duration-200 ${
+                          isActiveLink(category.href)
+                            ? 'text-[#ffd800] font-medium'
+                            : 'text-gray-600 hover:text-[#ffd800]'
+                        }`}
                         onClick={() => setIsMenuOpen(false)}
                       >
                         {category.name}
@@ -443,11 +534,15 @@ const Navbar = () => {
                 </div>
               </div>
 
-              {/* Blog & Resources - Simple Link (No Dropdown) */}
+              {/* Blog & Resources */}
               <div>
                 <button
                   onClick={() => toggleMobileDropdown('blog')}
-                  className="flex items-center justify-between w-full py-2 text-[#1E2E2B] border-b border-gray-200"
+                  className={`flex items-center justify-between w-full py-2 border-b border-gray-200 transition-colors duration-200 ${
+                    getActiveDropdown() === 'blog' 
+                      ? 'text-[#ffd800]' 
+                      : 'text-[#1E2E2B]'
+                  }`}
                 >
                   <span className="text-lg font-medium">Blog & Resources</span>
                   <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${mobileDropdowns.blog ? 'rotate-180' : ''}`} />
@@ -460,7 +555,11 @@ const Navbar = () => {
                       <a
                         key={index}
                         href={item.href}
-                        className="block py-2 text-gray-600 hover:text-[#ffd800] transition-colors duration-200"
+                        className={`block py-2 transition-colors duration-200 ${
+                          isActiveLink(item.href)
+                            ? 'text-[#ffd800] font-medium'
+                            : 'text-gray-600 hover:text-[#ffd800]'
+                        }`}
                         onClick={() => setIsMenuOpen(false)}
                       >
                         {item.name}
@@ -474,7 +573,11 @@ const Navbar = () => {
               <div>
                 <button
                   onClick={() => toggleMobileDropdown('about')}
-                  className="flex items-center justify-between w-full py-2 text-[#1E2E2B] border-b border-gray-200"
+                  className={`flex items-center justify-between w-full py-2 border-b border-gray-200 transition-colors duration-200 ${
+                    isActiveLink('/About-Us/') || getActiveDropdown() === 'about' 
+                      ? 'text-[#ffd800]' 
+                      : 'text-[#1E2E2B]'
+                  }`}
                 >
                   <span className="text-lg font-medium">About Us</span>
                   <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${mobileDropdowns.about ? 'rotate-180' : ''}`} />
@@ -487,7 +590,11 @@ const Navbar = () => {
                       <a
                         key={index}
                         href={item.href}
-                        className="block py-2 text-gray-600 hover:text-[#ffd800] transition-colors duration-200"
+                        className={`block py-2 transition-colors duration-200 ${
+                          isActiveLink(item.href)
+                            ? 'text-[#ffd800] font-medium'
+                            : 'text-gray-600 hover:text-[#ffd800]'
+                        }`}
                         onClick={() => setIsMenuOpen(false)}
                       >
                         {item.name}
